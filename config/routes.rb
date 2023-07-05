@@ -6,4 +6,5 @@ Rails.application.routes.draw do
   post '/auth/login', to: 'authentication#login'
   get '/*a', to: 'application#not_found'
 
+
 end
