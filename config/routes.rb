@@ -4,7 +4,11 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   namespace :api do
     resources :users, param: :_username
-    post '/auth/login', to: 'api/authentication#login'
-    get '/*a', to: 'api/application#not_found'
+    post '/auth/login', to: 'authentication#login'
+    get '/*a', to: 'application#not_found'
   end
+  namespace :api do
+    resources :posts
+  end
+  resources :posts
 end
