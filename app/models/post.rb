@@ -7,5 +7,7 @@ class Post < ApplicationRecord
   has_many :comments, dependent: :destroy
   has_one :user
 
+  has_many :attachments, dependent: :destroy
+  accepts_nested_attributes_for :attachments
 
 end
