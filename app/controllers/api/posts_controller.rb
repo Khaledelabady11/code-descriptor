@@ -1,6 +1,6 @@
 module Api
   class PostsController < ApplicationController
-    before_action :authorize_request, except: :show
+    # before_action :authorize_request, except: :show
 
     def new
       @post = Post.new
@@ -9,13 +9,20 @@ module Api
     def create
       @post = Post.new(post_params)
 
-      if @post.save
-        upload_image
-        render json: @post, status: :ok
+        if @post.save
+          if params[:post][:attachment].present?
+            response = ImgurUploader.upload(params[:post][:attachment].tempfile.path)
+            resource_id = response['data']['id']
+            resource_type = response['data']['type']
+            resource_url = response['data']['link']
+            attachment = AttachmentRepo.new(@post, response, resource_id, resource_type, resource_url)
+            attachment.create_attachment
+          end
+        render json: response , status: :ok
       else
-        render json: { errors: @post.errors.full_messages }, status: :unprocessable_entity
-      end
+        render json: { errors: response.errors.full_messages }, status: :unprocessable_entity
     end
+  end
 
     def show
       @post = Post.find(params[:id])
@@ -26,21 +33,5 @@ module Api
     def post_params
       params.require(:post).permit(:title,:description,:keywords,:user_id)
     end
-
-    def upload_image
-      if params[:post][:attachment].present?
-        attachments = Array(params[:post][:attachment])
-        image_paths = attachments.map { |attachment| attachment.tempfile.path if attachment.present? }.compact
-        response = ImgurUploader.upload(image_paths)
-        response.each do |image_data|
-          resource_id = image_data['data']['id']
-          resource_type = image_data['data']['type']
-          resource_url = image_data['data']['link']
-          attachment_repo = AttachmentRepo.new(@post, response, resource_id, resource_type, resource_url)
-          attachment_repo.create_attachment
-        end
-      end
-    end
   end
-
 end
