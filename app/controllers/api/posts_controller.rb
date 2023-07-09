@@ -1,6 +1,6 @@
 module Api
   class PostsController < ApplicationController
-    # before_action :authorize_request, except: :show
+    before_action :authorize_request, except: :show
 
     def new
       @post = Post.new
@@ -18,9 +18,9 @@ module Api
             attachment = AttachmentRepo.new(@post, response, resource_id, resource_type, resource_url)
             attachment.create_attachment
           end
-        render json: response , status: :ok
+        render json: @post , status: :ok
       else
-        render json: { errors: response.errors.full_messages }, status: :unprocessable_entity
+        render json: { errors: @post.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
@@ -31,7 +31,7 @@ module Api
     private
 
     def post_params
-      params.require(:post).permit(:title,:description,:keywords,:user_id)
+      params.require(:post).permit(:title, :description, :keywords).merge(user_id: @current_user.id)
     end
   end
 end

@@ -14,7 +14,7 @@ class ImgurUploader
     https.use_ssl = true
 
     request = Net::HTTP::Post.new(uri.path)
-    request['Authorization'] ='f694e4964b05ab8bbbdc0f61296007f805b3e0ba'
+    request['Authorization'] ='Bearer f694e4964b05ab8bbbdc0f61296007f805b3e0ba'
     request.set_form_data(params)
     response = https.request(request)
     JSON.parse(response.body)
