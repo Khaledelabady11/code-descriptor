@@ -21,11 +21,16 @@ services:
       - "4050:3000"
     volumes:
       - .:/app
+      - tesseract
     depends_on:
       - db
     env_file:
       - environment.env
     restart: always
+  tesseract:
+    image: tesseractshadow/tesseract4re
+    volumes:
+      - ./tessdata:/usr/share/tesseract-ocr/4.00/tessdata
 
 volumes:
   postgres:
