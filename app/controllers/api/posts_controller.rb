@@ -1,3 +1,4 @@
+
 module Api
   class PostsController < ApplicationController
     before_action :authorize_request, except: :show
@@ -8,7 +9,6 @@ module Api
 
     def create
       @post = Post.new(post_params)
-
         if @post.save
           if params[:post][:attachment].present?
             response = ImgurUploader.upload(params[:post][:attachment].tempfile.path)
@@ -17,6 +17,8 @@ module Api
             resource_url = response['data']['link']
             attachment = AttachmentRepo.new(@post, response, resource_id, resource_type, resource_url)
             attachment.create_attachment
+            extracted_text = ImageOcrService.perform_ocr(resource_url)
+            @post.description = extracted_text
           end
         render json: @post , status: :ok
       else
@@ -31,7 +33,12 @@ module Api
     private
 
     def post_params
-      params.require(:post).permit(:title, :description, :keywords).merge(user_id: @current_user.id)
+      params.require(:post).permit(:title, :keywords).merge(user_id: @current_user.id)
     end
   end
+
+
+
+
+
 end

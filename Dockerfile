@@ -18,6 +18,7 @@ RUN gem install bundler
 
 WORKDIR /app
 
+RUN apt-get update && apt-get install -y tesseract-ocr
 COPY Gemfile Gemfile.lock ./
 RUN bundle install
 
