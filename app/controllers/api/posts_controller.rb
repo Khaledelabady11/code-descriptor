@@ -1,3 +1,4 @@
+
 module Api
   class PostsController < ApplicationController
     before_action :authorize_request, except: :show
@@ -17,10 +18,11 @@ module Api
             resource_url = response['data']['link']
             attachment = AttachmentRepo.new(@post, response, resource_id, resource_type, resource_url)
             attachment.create_attachment
+            result = ImageOcrService.perform_ocr(resource_url)
           end
-        render json: @post , status: :ok
+        render json: result , status: :ok
       else
-        render json: { errors: @post.errors.full_messages }, status: :unprocessable_entity
+        render json: { errors: result.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
@@ -34,4 +36,9 @@ module Api
       params.require(:post).permit(:title, :description, :keywords).merge(user_id: @current_user.id)
     end
   end
+
+
+
+
+
 end
