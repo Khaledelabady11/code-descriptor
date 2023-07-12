@@ -1,4 +1,3 @@
-module Api
 
 class ApplicationController < ActionController::Base
   before_action :authorize_request
@@ -15,5 +14,5 @@ class ApplicationController < ActionController::Base
      end
    end
  end
-end
+
 
