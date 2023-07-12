@@ -1,7 +1,13 @@
 
 module Api
   class PostsController < ApplicationController
-    before_action :authorize_request, except: :show
+    before_action :authorize_request, only: [:create]
+
+
+    def index
+      @posts = Post.all
+      render json: @posts, status: :ok
+    end
 
     def new
       @post = Post.new
