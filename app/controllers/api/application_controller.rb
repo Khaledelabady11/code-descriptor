@@ -1,13 +1,7 @@
+module Api
 
-class ApplicationController < ActionController::API
+class ApplicationController < ActionController::Base
   before_action :authorize_request
-
-  def not_found
-    render json: { error: 'not_found' }
-  end
-
-
-  private
 
   def authorize_request
     header = request.headers['Authorization']
@@ -18,8 +12,8 @@ class ApplicationController < ActionController::API
       @current_user = User.find(@decoded[:user_id])
     rescue ActiveRecord::RecordNotFound => e
       render json: { error: e.message }, status: :unauthorized
-    rescue JWT::DecodeError => e
-      render json: { error: e.message }, status: :unauthorized
-    end
-  end
+     end
+   end
+ end
 end
+
