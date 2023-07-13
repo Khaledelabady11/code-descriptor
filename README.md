@@ -9,8 +9,6 @@
 
 ### Install Docker and DockerCompose
 
-### Setup & Create Environment File - [Example](https://i.imgur.com/jB1TSvt.png)
-
 #### since we have a makefile
 
 - up and run dependencies
