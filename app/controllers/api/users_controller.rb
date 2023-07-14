@@ -2,6 +2,8 @@ module Api
   class UsersController < ApplicationController
     before_action :authorize_request, except: :create
     before_action :find_user, except: %i[create index]
+    skip_before_action :verify_authenticity_token
+
 
     # GET /users
     def index

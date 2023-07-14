@@ -2,6 +2,7 @@
 module Api
   class PostsController < ApplicationController
     before_action :authorize_request, only: [:create]
+    skip_before_action :verify_authenticity_token, only: [:create]
 
 
     def index
@@ -24,7 +25,8 @@ module Api
             attachment = AttachmentRepo.new(@post, response, resource_id, resource_type, resource_url)
             attachment.create_attachment
             extracted_text = ImageOcrService.perform_ocr(resource_url)
-            @post.description = extracted_text
+            @post.extracted_text = extracted_text
+            @post.save
           end
         render json: @post , status: :ok
       else
