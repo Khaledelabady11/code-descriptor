@@ -2,13 +2,17 @@
 module Api
   class PostsController < ApplicationController
     before_action :authorize_request, only: [:create]
-    skip_before_action :verify_authenticity_token, only: [:create]
+    skip_before_action :verify_authenticity_token
 
 
     def index
       @posts = Post.all
-      render json: @posts, status: :ok
     end
+
+    def show
+      @post = Post.find(params[:id])
+    end
+
 
     def new
       @post = Post.new
@@ -34,8 +38,11 @@ module Api
     end
   end
 
-    def show
+
+    def destroy
       @post = Post.find(params[:id])
+      @post.destroy
+      render json: { message: 'Post deleted successfully' }
     end
 
     private
@@ -44,9 +51,4 @@ module Api
       params.require(:post).permit(:title, :keywords).merge(user_id: @current_user.id)
     end
   end
-
-
-
-
-
 end
