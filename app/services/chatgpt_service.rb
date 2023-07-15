@@ -13,7 +13,8 @@ class ChatgptService
     }
     @api_url = 'https://api.openai.com/v1/chat/completions'
     @model = model
-    @message = body
+    instruction = "just explain this code"
+    @message = instruction + body
     @post = post
   end
 
