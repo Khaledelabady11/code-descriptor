@@ -13,6 +13,10 @@ services:
     volumes:
       - postgres:/var/lib/postgresql
 
+  redis:
+    image: redis:6.2.0
+    restart: always
+
   backend:
     image: descriptor-backend
     build: .
@@ -27,5 +31,18 @@ services:
       - environment.env
     restart: always
 
+  sidekiq:
+    image: descriptor-backend
+    command: 'bundle exec sidekiq'
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+      - redis
+      - backend
+    env_file:
+      - environment.env
+    restart: always
+    
 volumes:
   postgres:
