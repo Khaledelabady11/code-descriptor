@@ -29,13 +29,13 @@ module Api
             attachment = AttachmentRepo.new(@post, response, resource_id, resource_type, resource_url)
             attachment.create_attachment
             extracted_text = ImageOcrService.perform_ocr(resource_url)
-            @post.extracted_text = extracted_text
-            @post.save
+            @post.update(extracted_text: extracted_text)
           end
         render json: @post , status: :ok
       else
         render json: { errors: @post.errors.full_messages }, status: :unprocessable_entity
     end
+    CreateArticleJob.perform_now(@post)
   end
 
 
