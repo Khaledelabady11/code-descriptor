@@ -1,4 +1,3 @@
-
 module Api
   class PostsController < ApplicationController
     before_action :authorize_request, only: [:create]
@@ -6,11 +5,14 @@ module Api
 
 
     def index
-      @posts = Post.all
+      @posts = Post.includes(:user).order(created_at: :desc)
+      render 'api/posts/index', formats: :json
     end
 
     def show
       @post = Post.find(params[:id])
+      render 'api/posts/show', formats: :json
+
     end
 
 
