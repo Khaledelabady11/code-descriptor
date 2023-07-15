@@ -4,7 +4,7 @@ class Post < ApplicationRecord
   validates :keywords, presence: true
 
   has_many :comments, dependent: :destroy
-  has_one :user
+  belongs_to :user
 
   has_many :attachments, dependent: :destroy
   accepts_nested_attributes_for :attachments
