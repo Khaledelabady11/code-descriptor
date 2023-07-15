@@ -3,7 +3,7 @@ class ChatgptService
 
   attr_reader :api_url, :options, :model, :message
 
-  def initialize(body, model = 'gpt-3.5-turbo')
+  def initialize(post ,body, model = 'gpt-3.5-turbo')
     api_key = Rails.application.credentials.chatgpt_api_key
     @options = {
       headers: {
@@ -14,6 +14,7 @@ class ChatgptService
     @api_url = 'https://api.openai.com/v1/chat/completions'
     @model = model
     @message = body
+    @post = post
   end
 
   def call
@@ -24,7 +25,9 @@ class ChatgptService
     response = HTTParty.post(api_url, body: body.to_json, headers: options[:headers], timeout: 80)
     raise CustomException, response['error']['message'] unless response.code == 200
 
-    response['choices'][0]['message']['content']
+    description = response['choices'][0]['message']['content']
+    create_article(description)
+    description
   end
 
   class CustomException < StandardError; end
@@ -33,6 +36,15 @@ class ChatgptService
     def call(message, model = 'gpt-3.5-turbo')
       new(message, model).call
     end
+  end
+
+  private
+
+  def create_article(description)
+    return unless @post.present?
+
+    article_repo = ArticleRepo.new(@post, description)
+    article_repo.create_article
   end
 end
 
