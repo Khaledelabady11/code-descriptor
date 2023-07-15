@@ -30,13 +30,13 @@ module Api
             attachment.create_attachment
             extracted_text = ImageOcrService.perform_ocr(resource_url)
             @post.update(extracted_text: extracted_text)
+            CreateArticleJob.perform_later(@post)
           end
         render json: @post , status: :ok
       else
         render json: { errors: @post.errors.full_messages }, status: :unprocessable_entity
     end
-    CreateArticleJob.perform_now(@post)
-  end
+    end
 
 
     def destroy
