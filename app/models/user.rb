@@ -7,6 +7,7 @@ class User < ApplicationRecord
             length: { minimum: 6 },
             if: -> { new_record? || !password.nil? }
   has_many :posts, foreign_key: :user_id, dependent: :destroy
+  has_many :likes
   has_many :comments, dependent: :destroy
 
 
@@ -15,5 +16,5 @@ class User < ApplicationRecord
   def admin?
     role == 'admin'
   end
-  
+
 end
