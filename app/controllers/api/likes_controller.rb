@@ -5,6 +5,8 @@ module Api
     def index
       @post = Post.find(params[:post_id])
       @likes = @post.likes.includes(:user)
+      render 'api/likes/index' , formats: :json
+
     end
 
     def create
@@ -25,3 +27,4 @@ module Api
     end
   end
 end
+
