@@ -1,6 +1,6 @@
 module Api
   class PostsController < ApplicationController
-    before_action :authorize_request, only: [:create]
+    before_action :authorize_request
     skip_before_action :verify_authenticity_token
 
 
@@ -12,9 +12,11 @@ module Api
     def show
       @post = Post.find(params[:id])
       render 'api/posts/show', formats: :json
-
     end
-
+    def myposts
+      @posts = Post.includes(:user, :likes).order(id: :desc).where(user_id: @current_user.id)
+      render 'api/posts/myposts' , formats: :json
+    end
 
     def new
       @post = Post.new
