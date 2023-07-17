@@ -8,6 +8,7 @@ Rails.application.routes.draw do
       collection do
         get 'myposts'
       end
+      resources :comments
        resources :likes, only: [:index]
     end
   end
