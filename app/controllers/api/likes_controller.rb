@@ -12,7 +12,7 @@ module Api
     def create
       @like = @current_user.likes.create(likes_params)
       if @like.save
-        render json: { message: 'Liked' }
+        render json: { message: 'Liked' } , status: :created
       end
     end
 
@@ -27,4 +27,3 @@ module Api
     end
   end
 end
-

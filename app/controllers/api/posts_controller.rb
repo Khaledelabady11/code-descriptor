@@ -36,7 +36,7 @@ module Api
             @post.update(extracted_text: extracted_text)
             CreateArticleJob.perform_later(@post)
           end
-        render json: @post , status: :ok
+        render json: @post , status: :created
       else
         render json: { errors: @post.errors.full_messages }, status: :unprocessable_entity
     end

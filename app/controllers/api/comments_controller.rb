@@ -12,7 +12,7 @@ module Api
       @post = Post.find(params[:post_id])
       @comment = @post.comments.create(comment_params)
       if @comment.save
-        render json: @comment , status: :ok
+        render json: @comment , status: :created
       else
         render json: { errors: @comment.errors.full_messages }, status: :unprocessable_entity
       end
