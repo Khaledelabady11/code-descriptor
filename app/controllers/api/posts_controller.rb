@@ -30,7 +30,9 @@ module Api
             resource_id = response['data']['id']
             resource_type = response['data']['type']
             resource_url = response['data']['link']
-            attachment = AttachmentRepo.new(@post, response, resource_id, resource_type, resource_url)
+            width = response['data']['width']
+            height = response['data']['height']
+            attachment = AttachmentRepo.new(@post, response, resource_id, resource_type, resource_url , width.to_s , height.to_s)
             attachment.create_attachment
             extracted_text = ImageOcrService.perform_ocr(resource_url)
             @post.update(extracted_text: extracted_text)
