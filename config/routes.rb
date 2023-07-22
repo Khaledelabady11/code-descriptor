@@ -20,7 +20,9 @@ Rails.application.routes.draw do
   end
 
   namespace :api do
-    resources :users, param: :_username
+    resources :users, param: :id
     post '/auth/login', to: 'authentication#login'
+    post '/auth/logout', to: 'authentication#logout'
+
   end
 end

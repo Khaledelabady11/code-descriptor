@@ -1,7 +1,7 @@
 module Api
   class UsersController < ApplicationController
     before_action :authorize_request, except: :create
-    before_action :find_user, except: %i[create index]
+    before_action :find_user ,only: [:edit,:show ,:destroy]
     skip_before_action :verify_authenticity_token
 
 
@@ -27,7 +27,7 @@ module Api
       end
     end
 
-    # PUT /users/{username}
+    # PUT /users/{id}
     def update
       unless @user.update(user_params)
         render json: { errors: @user.errors.full_messages },
@@ -43,9 +43,13 @@ module Api
     private
 
     def find_user
-      @user = User.find_by_username!(params[:_username])
+      begin
+        @user = User.find(params[:id])
       rescue ActiveRecord::RecordNotFound
         render json: { errors: 'User not found' }, status: :not_found
+      rescue => e
+        render json: { errors: e.message }, status: :unprocessable_entity
+      end
     end
 
     def user_params
