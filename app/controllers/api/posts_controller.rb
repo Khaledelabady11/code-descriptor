@@ -5,7 +5,7 @@ module Api
 
 
     def index
-      @posts = Post.includes(:user).order(created_at: :desc).paginate(page: params[:page], per_page: 5)
+      @posts = Post.includes(:user).order(created_at: :desc).paginate(page: params[:page], per_page: 8)
       render 'api/posts/index', formats: :json
     end
 
