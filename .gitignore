@@ -7,8 +7,6 @@
 # Ignore bundler config.
 /.bundle
 vendor/bundle
-Gemfile.lock
-environment.env
 
 # Ignore all logfiles and tempfiles.
 /log/*
@@ -32,3 +30,4 @@ environment.env
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+environment.env
