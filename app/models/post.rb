@@ -12,5 +12,12 @@ class Post < ApplicationRecord
 
   has_many :likes
   belongs_to :user
+
+
+  def liked?(current_user)
+    return false unless current_user
+
+    likes.where(user_id: current_user.id).exists?
+  end
   
 end

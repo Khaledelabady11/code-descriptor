@@ -1,11 +1,11 @@
 module Api
   class PostsController < ApplicationController
-    before_action :authorize_request , only: [:create , :destory]
+    before_action :authorize_request , only: [:create,:destory,:index]
     skip_before_action :verify_authenticity_token
 
 
     def index
-      @posts = Post.includes(:user).order(created_at: :desc).paginate(page: params[:page], per_page: 8)
+      @posts = Post.includes(:user,:attachments,:likes,:comments).order(created_at: :desc).paginate(page: params[:page], per_page: 8)
       render 'api/posts/index', formats: :json
     end
 

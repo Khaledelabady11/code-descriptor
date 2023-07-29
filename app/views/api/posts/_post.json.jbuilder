@@ -1,6 +1,7 @@
 json.id post.id
 json.title post.title
 json.content post.extracted_text
+json.liked post.liked?(@current_user)
 json.attachment do
   json.image post.attachments.first&.resource_url
   json.image_width post.attachments.first&.width
