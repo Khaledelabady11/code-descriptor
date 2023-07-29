@@ -5,6 +5,10 @@ Rails.application.routes.draw do
 
   namespace :api do
     resources :posts do
+      resource :likes, only: %I[create] do
+        get :index
+        delete :unlike
+      end
       collection do
         get 'myposts'
       end
@@ -14,9 +18,6 @@ Rails.application.routes.draw do
   end
   namespace :api do
     get '/articles/:post_id', to: 'articles#show'
-  end
-  namespace :api do
-    resources :likes, only: [:create, :destroy]
   end
 
   namespace :api do
