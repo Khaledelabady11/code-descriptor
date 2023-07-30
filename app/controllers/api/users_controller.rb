@@ -4,22 +4,21 @@ module Api
     before_action :find_user ,only: [:edit,:show ,:destroy]
     skip_before_action :verify_authenticity_token
 
-
-    # GET /users
     def index
       @users = User.all
       render json: @users, status: :ok
     end
 
-    # GET /users/{username}
     def show
       render json: @user, status: :ok
     end
 
-    # POST /users
     def create
       @user = User.new(user_params)
       if @user.save
+        if params[:user][:avatar].present?
+          response = ImgurUploader.upload(params[:user][:avatar].tempfile.path).compact.first
+          upload_avatar(response,@user)
         render json: @user, status: :created
       else
         render json: { errors: @user.errors.full_messages },
@@ -27,7 +26,6 @@ module Api
       end
     end
 
-    # PUT /users/{id}
     def update
       unless @user.update(user_params)
         render json: { errors: @user.errors.full_messages },
@@ -35,12 +33,10 @@ module Api
       end
     end
 
-    # DELETE /users/{username}
     def destroy
       @user.destroy
     end
 
-    private
 
     def find_user
       begin
@@ -57,7 +53,14 @@ module Api
          :name, :username, :email, :password, :password_confirmation
       )
     end
+
+    def upload_avatar(response ,resource)
+        avatar_id = response["data"]["id"]
+        avatar_type = response["data"]["type"]
+        avatar_url = response["data"]["link"]
+        avatar_repo = AvatarRepo.new(resource, response, resource_id, resource_type, resource_url)
+        avatar_repo.create_avatar
+      end
+    end
   end
-
 end
-

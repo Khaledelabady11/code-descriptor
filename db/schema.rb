@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_22_064002) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_30_122908) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -63,6 +63,19 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_22_064002) do
     t.index ["post_id"], name: "index_attachments_on_post_id"
   end
 
+  create_table "avatars", force: :cascade do |t|
+    t.string "resource_id"
+    t.string "resource_type"
+    t.string "resource_url"
+    t.text "raw_response"
+    t.string "width"
+    t.string "height"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_avatars_on_user_id"
+  end
+
   create_table "comments", force: :cascade do |t|
     t.string "body"
     t.datetime "created_at", null: false
@@ -106,6 +119,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_22_064002) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "articles", "posts"
   add_foreign_key "attachments", "posts"
+  add_foreign_key "avatars", "users"
   add_foreign_key "comments", "posts"
   add_foreign_key "comments", "users"
   add_foreign_key "likes", "posts"
