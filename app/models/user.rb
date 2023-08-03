@@ -10,6 +10,7 @@ class User < ApplicationRecord
   has_many :likes
   has_many :comments, dependent: :destroy
 
+  has_one :avatar
 
   enum role: { user: 0, admin: 1 }, _default: :user
 

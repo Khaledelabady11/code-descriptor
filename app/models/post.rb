@@ -8,6 +8,8 @@ class Post < ApplicationRecord
   has_many :attachments, dependent: :destroy
   accepts_nested_attributes_for :attachments
 
+
+
   has_one :article
 
   has_many :likes
@@ -19,5 +21,5 @@ class Post < ApplicationRecord
 
     likes.where(user_id: current_user.id).exists?
   end
-  
+
 end
