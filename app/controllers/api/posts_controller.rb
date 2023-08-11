@@ -25,8 +25,8 @@ module Api
     def create
       @post = Post.new(post_params)
         if @post.save
-          if params[:post][:attachment].present?
-            response = ImgurUploader.upload(params[:post][:attachment].tempfile.path)
+          if params[:attachment].present?
+            response = ImgurUploader.upload(params[:attachment].tempfile.path)
             create_attachment_for_post(@post, response)
             extracted_text = ImageOcrService.perform_ocr(response['data']['link'])
             @post.update(extracted_text: extracted_text)

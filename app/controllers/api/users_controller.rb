@@ -1,22 +1,20 @@
 module Api
   class UsersController < ApplicationController
-    before_action :authorize_request, only: [:update, :show, :destory]
+    before_action :authorize_request, only: [:update, :destory]
     before_action :find_user ,only: [:edit,:show ,:destroy]
     skip_before_action :verify_authenticity_token
 
 
-    # GET /users
     def index
       @users = User.all
-      render json: @users, status: :ok
+      render 'api/users/index', formats: :json
+
     end
 
-    # GET /users/{username}
     def show
-      render json: @user, status: :ok
+      render 'api/users/show', formats: :json
     end
 
-    # POST /users
     def create
       @user = User.new(user_params)
       if @user.save
@@ -25,7 +23,7 @@ module Api
           create_avatar_for_user(@user, response)
           token = JsonWebToken.encode(user_id: @user.id)
           @user.update(token: token)
-          render json: @user, status: :created
+          render 'api/users/create', formats: :json
         end
       else
         render json: { errors: @user.errors.full_messages },
@@ -33,7 +31,6 @@ module Api
       end
     end
 
-    # PUT /users/{id}
     def update
       unless @user.update(user_params)
         render json: { errors: @user.errors.full_messages },
@@ -41,7 +38,6 @@ module Api
       end
     end
 
-    # DELETE /users/{username}
     def destroy
       @user.destroy
     end
@@ -61,7 +57,7 @@ module Api
     def user_params
       params.require(:user).permit(
         :name, :username, :email, :password, :password_confirmation,
-        user: [:avatar] # Permitting the :avatar attribute within the nested :user parameter
+        user: [:avatar]
       )
     end
 

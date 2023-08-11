@@ -4,13 +4,12 @@ module Api
     skip_before_action :verify_authenticity_token
 
 
-    # POST /auth/login
     def login
       @user = User.find_by_email(params[:email])
       if @user&.authenticate(params[:password])
         token = JsonWebToken.encode(user_id: @user.id)
         @user.update(token: token)
-        render json: @user, status: :ok
+        render 'api/authentication/login', formats: :json
       else
         render json: { error: 'unauthorized' }, status: :unauthorized
       end
