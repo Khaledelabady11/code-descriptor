@@ -1,19 +1,18 @@
 databases:
-  - name: postgres
-    ipAllowList: []
-    databaseName: my_app_render
-    user: my_app_render
+  - name: <%= ENV['POSTGRES_DB'] %>
+    databaseName: <%= ENV['POSTGRES_DB'] %>
+    user: <%= ENV['POSTGRES_USER'] %>
 
 services:
   - type: web
-    name: my_app_render
-    env: ruby
-    buildCommand: "./render-build.sh"
-    startCommand: "bundle exec rails s"
+    name: code-descriptor
+    runtime: ruby
+    buildCommand: "./bin/render-build.sh"
+    startCommand: "bundle exec puma -C config/puma.rb"
     envVars:
       - key: DATABASE_URL
         fromDatabase:
-          name: postgres
+          name: code-descriptor
           property: connectionString
       - key: RAILS_MASTER_KEY
         sync: false
