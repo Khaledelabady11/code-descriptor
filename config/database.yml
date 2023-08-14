@@ -1,6 +1,7 @@
 default: &default
   adapter: postgresql
   encoding: utf8
+  host: <%= ENV['HOSTNAME'] %>
   # schema_search_path: public
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
