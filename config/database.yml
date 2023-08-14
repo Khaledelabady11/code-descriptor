@@ -20,4 +20,5 @@ test:
 
 production:
  <<: *default
+   host: <%= ENV.fetch('POSTGRES_HOST', '127.0.0.1') %>
   database: <%= ENV['POSTGRES_DB'] %>
