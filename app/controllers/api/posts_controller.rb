@@ -30,7 +30,7 @@ module Api
             create_attachment_for_post(@post, response)
             extracted_text = ImageOcrService.perform_ocr(response['data']['link'])
             @post.update(extracted_text: extracted_text)
-            CreateArticleJob.perform_later(@post)
+            # CreateArticleJob.perform_later(@post)
           end
         render json: @post , status: :created
       else
