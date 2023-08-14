@@ -16,6 +16,7 @@ test:
 
 production:
   <<: *default
+  url: <%= ENV['DATABASE_URL'] %>
   database: descriptor_production
   username: code-descriptor
   password: <%= ENV['MYSITE_DATABASE_PASSWORD'] %>
