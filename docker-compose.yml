@@ -7,7 +7,7 @@ services:
       - environment.env
     restart: always
     ports:
-      - "5432:5433"
+      - "5434:5433"
     healthcheck:
       test: "exit 0"
     volumes:
@@ -25,8 +25,6 @@ services:
       - "4050:3000"
     volumes:
       - .:/app
-    expose:
-      - "5432"
     depends_on:
       - db
     env_file:
