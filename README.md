@@ -15,7 +15,10 @@
 ```sh
 $ make build
 ```
-
+- open a bash shell within app container
+```sh
+$ make bash
+```
 - start rails server
 ```sh
 $ make up

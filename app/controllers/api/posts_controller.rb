@@ -1,6 +1,6 @@
 module Api
   class PostsController < ApplicationController
-    before_action :authorize_request , only: [:create,:destory,:index]
+    before_action :authorize_request , only: [:create,:destory]
     skip_before_action :verify_authenticity_token
 
 
@@ -30,7 +30,7 @@ module Api
             create_attachment_for_post(@post, response)
             extracted_text = ImageOcrService.perform_ocr(response['data']['link'])
             @post.update(extracted_text: extracted_text)
-            CreateArticleJob.perform_later(@post)
+            ChatgptService.call(@post,@post.extracted_text)
           end
         render json: @post , status: :created
       else
