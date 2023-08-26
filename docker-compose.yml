@@ -31,18 +31,18 @@ services:
       - environment.env
     restart: always
 
-  sidekiq:
-    image: descriptor-backend
-    command: 'bundle exec sidekiq'
-    volumes:
-      - .:/app
-    depends_on:
-      - db
-      - redis
-      - backend
-    env_file:
-      - environment.env
-    restart: always
-    
+  # sidekiq:
+  #   # image: descriptor-backend
+  #   command: 'bundle exec sidekiq'
+  #   volumes:
+  #     - .:/app
+  #   depends_on:
+  #     - db
+  #     - redis
+  #     - backend
+  #   env_file:
+  #     - environment.env
+  #   restart: always
+
 volumes:
   postgres:

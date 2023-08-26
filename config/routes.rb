@@ -13,7 +13,7 @@ Rails.application.routes.draw do
         get 'myposts'
       end
       resources :comments
-       resources :likes, only: [:index]
+      resources :likes, only: [:index]
     end
   end
   namespace :api do
