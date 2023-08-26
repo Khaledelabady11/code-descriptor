@@ -22,7 +22,6 @@ RUN apt-get update && apt-get install -y tesseract-ocr
 COPY Gemfile Gemfile.lock ./
 RUN bundle install
 
-
 COPY entrypoint.sh ./
 RUN chmod +x entrypoint.sh
 
