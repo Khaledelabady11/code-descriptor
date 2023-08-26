@@ -1,12 +1,9 @@
 default: &default
   adapter: postgresql
   encoding: utf8
+  host: <%= ENV['HOSTNAME'] %>
   schema_search_path: public
-  username: <%= ENV['POSTGRES_USER'] %>
-  password: <%= ENV['POSTGRES_PASSWORD'] %>
-  host: <%= ENV.fetch('POSTGRES_HOST', '127.0.0.1') %>
-  port: <%= ENV.fetch('POSTGRES_PORT', '5432') %>
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS", 20)%>
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 
 development:
@@ -20,4 +17,4 @@ test:
 
 production:
   <<: *default
-  database: <%= ENV['POSTGRES_DB'] %>
+  url: <%= ENV['DATABASE_URL'] %>
